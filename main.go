@@ -5,6 +5,7 @@ import (
 	"encoding/csv"
 	"fmt"
 	"os"
+	"path/filepath"
 	"strconv"
 	"strings"
 
@@ -13,10 +14,10 @@ import (
 
 func main() {
 	if len(os.Args) != 2 {
-		//failOnError("main.exeにテキストファイルをドラッグ&ドロップしてください", nil)
+		failOnError("main.exeにテキストファイルをドラッグ&ドロップしてください", nil)
 	}
-	convertTxt2Csv("./testdata/sample_tmp.txt")
-	//convertTxt2Csv(os.Args[1])
+	//convertTxt2Csv("./testdata/sample_tmp.txt")
+	convertTxt2Csv(os.Args[1])
 	waitEnter()
 }
 
@@ -89,15 +90,25 @@ func convertTxt2Csv(fileName string) {
 	}
 
 	appendAddressRow(addressSheet, addressItems, addressIndex, needNumOfAddressRecord)
-	err = addressExcel.Save("address.xlsx")
+
+	exe, err := os.Executable()
+	if err != nil {
+		failOnError("exeファイル実行パス取得失敗", err)
+	}
+
+	outputDirPath := filepath.Dir(exe)
+	err = addressExcel.Save(outputDirPath + "/address.xlsx")
+
 	if err != nil {
 		failOnError("address.xlsxの保存に失敗しました", err)
 	}
+	fmt.Println(outputDirPath + "\\address.xlsxを出力しました")
 
-	err = taskExcel.Save("task.xlsx")
+	err = taskExcel.Save(outputDirPath + "/task.xlsx")
 	if err != nil {
 		failOnError("task.xlsxの保存に失敗しました", err)
 	}
+	fmt.Println(outputDirPath + "\\task.xlsxを出力しました")
 }
 
 func appendAddressRow(sheet *xlsx.Sheet, items []string, rowNumber, needNumOfAddressRecord int) int {
