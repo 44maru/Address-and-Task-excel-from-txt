@@ -214,14 +214,24 @@ func appendTaskRow(sheet *xlsx.Sheet, items []string, rowNumber int, sectionId s
 
 	sheet.Cell(rowNumber, 6).Value = items[3] // Color
 
-	switch items[2] { // Size
+	switch strings.ToLower(items[2]) { // Size
+	case "":
+		sheet.Cell(rowNumber, 7).Value = "Random"
 	case "s":
+		fallthrough
+	case "sランダム":
 		sheet.Cell(rowNumber, 7).Value = "Small"
 	case "m":
+		fallthrough
+	case "mランダム":
 		sheet.Cell(rowNumber, 7).Value = "Medium"
 	case "l":
+		fallthrough
+	case "lランダム":
 		sheet.Cell(rowNumber, 7).Value = "Large"
 	case "xl":
+		fallthrough
+	case "xlランダム":
 		sheet.Cell(rowNumber, 7).Value = "XLarge"
 	case "s/m":
 		sheet.Cell(rowNumber, 7).Value = "S/M"
