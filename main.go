@@ -126,11 +126,11 @@ func appendAddressRow(sheet *xlsx.Sheet, items []string, rowNumber, needNumOfAdd
 		sheet.Cell(rowNumber, 7).Value = items[4] // Zip Code
 		sheet.Cell(rowNumber, 8).Value = items[8] // TEL
 		sheet.Cell(rowNumber, 18).Value = fmt.Sprintf("Profile%d", rowNumber)
-		_, err := strconv.Atoi(items[13])
+		_, err := strconv.Atoi(items[14])
 		if err == nil {
 			// Card
-			sheet.Cell(rowNumber, 19).Value = items[13] // Card Number
-			cardMonth, err := strconv.Atoi(items[14])   // Month
+			sheet.Cell(rowNumber, 19).Value = items[14] // Card Number
+			cardMonth, err := strconv.Atoi(items[15])   // Month
 			if err != nil {
 				failOnError(
 					fmt.Sprintf("カード期限月の数値変換エラー。 テキストファイルセクション%s\n", items[1]),
@@ -138,7 +138,7 @@ func appendAddressRow(sheet *xlsx.Sheet, items []string, rowNumber, needNumOfAdd
 			}
 			sheet.Cell(rowNumber, 20).SetInt(cardMonth)
 
-			cardYear, err := strconv.Atoi(items[15]) // Year
+			cardYear, err := strconv.Atoi(items[16]) // Year
 			if err != nil {
 				failOnError(
 					fmt.Sprintf("カード期限年の数値変換エラー。 テキストファイルセクション%s\n", items[1]),
@@ -146,7 +146,7 @@ func appendAddressRow(sheet *xlsx.Sheet, items []string, rowNumber, needNumOfAdd
 			}
 			sheet.Cell(rowNumber, 21).SetInt(cardYear)
 
-			cardCvv, err := strconv.Atoi(items[16]) // CVV
+			cardCvv, err := strconv.Atoi(items[17]) // CVV
 			if err != nil {
 				failOnError(
 					fmt.Sprintf("カードCVVの数値変換エラー。 テキストファイルセクション%s\n", items[1]),
@@ -239,7 +239,7 @@ func appendTaskRow(sheet *xlsx.Sheet, items []string, rowNumber int, sectionId s
 		sheet.Cell(rowNumber, 7).Value = "L/XL"
 	default:
 		fmt.Printf(
-			"サイズ'%s'は、規定外のため、そのままtask.xlsxに入力します。Excel行%d セクション%s\n",
+			"サイズ'%s'は、規定外のため、そのままtask.xlsxに入力します。Excel行%d テキストファイルセクション%s\n",
 			items[2], rowNumber, sectionId)
 		sheet.Cell(rowNumber, 7).Value = items[2]
 	}
