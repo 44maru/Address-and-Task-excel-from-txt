@@ -119,24 +119,24 @@ func appendAddressRow(sheet *xlsx.Sheet, items []string, rowNumber, needNumOfAdd
 	for i := 0; i < needNumOfAddressRecord; i++ {
 		sheet.Cell(rowNumber, 0).Value = items[3] // First Name
 		sheet.Cell(rowNumber, 1).Value = items[2] // Last Name
-		sheet.Cell(rowNumber, 2).Value = "Japan"
-		sheet.Cell(rowNumber, 3).Value = items[6] // City
-		sheet.Cell(rowNumber, 4).Value = items[7] // Address
-		sheet.Cell(rowNumber, 6).Value = items[5] // State
-		sheet.Cell(rowNumber, 7).Value = items[4] // Zip Code
-		sheet.Cell(rowNumber, 8).Value = items[8] // TEL
-		sheet.Cell(rowNumber, 18).Value = fmt.Sprintf("Profile%d", rowNumber)
+		sheet.Cell(rowNumber, 4).Value = "Japan"
+		sheet.Cell(rowNumber, 5).Value = items[6]  // City
+		sheet.Cell(rowNumber, 6).Value = items[7]  // Address
+		sheet.Cell(rowNumber, 8).Value = items[5]  // State
+		sheet.Cell(rowNumber, 9).Value = items[4]  // Zip Code
+		sheet.Cell(rowNumber, 10).Value = items[8] // TEL
+		sheet.Cell(rowNumber, 22).Value = fmt.Sprintf("Profile%d", rowNumber)
 		_, err := strconv.Atoi(items[14])
 		if err == nil {
 			// Card
-			sheet.Cell(rowNumber, 19).Value = items[14] // Card Number
+			sheet.Cell(rowNumber, 23).Value = items[14] // Card Number
 			cardMonth, err := strconv.Atoi(items[15])   // Month
 			if err != nil {
 				failOnError(
 					fmt.Sprintf("カード期限月の数値変換エラー。 テキストファイルセクション%s\n", items[1]),
 					nil)
 			}
-			sheet.Cell(rowNumber, 20).SetInt(cardMonth)
+			sheet.Cell(rowNumber, 24).SetInt(cardMonth)
 
 			cardYear, err := strconv.Atoi(items[16]) // Year
 			if err != nil {
@@ -144,22 +144,23 @@ func appendAddressRow(sheet *xlsx.Sheet, items []string, rowNumber, needNumOfAdd
 					fmt.Sprintf("カード期限年の数値変換エラー。 テキストファイルセクション%s\n", items[1]),
 					nil)
 			}
-			sheet.Cell(rowNumber, 21).SetInt(cardYear)
+			sheet.Cell(rowNumber, 25).SetInt(cardYear)
 
-			cardCvv, err := strconv.Atoi(items[17]) // CVV
+			// Check digit
+			_, err = strconv.Atoi(items[17]) // CVV
 			if err != nil {
 				failOnError(
 					fmt.Sprintf("カードCVVの数値変換エラー。 テキストファイルセクション%s\n", items[1]),
 					nil)
 			}
-			sheet.Cell(rowNumber, 22).SetInt(cardCvv)
-			sheet.Cell(rowNumber, 26).Value = "false"
+			sheet.Cell(rowNumber, 27).Value = items[17] // CVV
+			sheet.Cell(rowNumber, 33).Value = "false"
 		} else {
 			// 代金引換
-			sheet.Cell(rowNumber, 26).Value = "true"
+			sheet.Cell(rowNumber, 33).Value = "true"
 		}
-		sheet.Cell(rowNumber, 24).Value = items[9] // Email
-		sheet.Cell(rowNumber, 25).Value = "No checkout limit"
+		sheet.Cell(rowNumber, 28).Value = items[9] // Email
+		sheet.Cell(rowNumber, 32).Value = "No checkout limit"
 		rowNumber++
 	}
 
@@ -169,31 +170,31 @@ func appendAddressRow(sheet *xlsx.Sheet, items []string, rowNumber, needNumOfAdd
 func appendAddressHeader(sheet *xlsx.Sheet) {
 	sheet.Cell(0, 0).Value = "First"
 	sheet.Cell(0, 1).Value = "Last"
-	sheet.Cell(0, 2).Value = "Country"
-	sheet.Cell(0, 3).Value = "City"
-	sheet.Cell(0, 4).Value = "Address"
-	sheet.Cell(0, 5).Value = "Apt/House"
-	sheet.Cell(0, 6).Value = "State"
-	sheet.Cell(0, 7).Value = "ZipCode"
-	sheet.Cell(0, 8).Value = "Phone"
-	sheet.Cell(0, 9).Value = "First"
-	sheet.Cell(0, 10).Value = "Last"
-	sheet.Cell(0, 11).Value = "Country"
-	sheet.Cell(0, 12).Value = "City"
-	sheet.Cell(0, 13).Value = "Address"
-	sheet.Cell(0, 14).Value = "Apt / House"
-	sheet.Cell(0, 15).Value = "State"
-	sheet.Cell(0, 16).Value = "ZipCode"
-	sheet.Cell(0, 17).Value = "Phone"
-	sheet.Cell(0, 18).Value = "Profile Name"
-	sheet.Cell(0, 19).Value = "Card Number"
-	sheet.Cell(0, 20).Value = "Month"
-	sheet.Cell(0, 21).Value = "Year"
-	sheet.Cell(0, 22).Value = "CVV"
-	sheet.Cell(0, 23).Value = "Card Name"
-	sheet.Cell(0, 24).Value = "Email"
-	sheet.Cell(0, 25).Value = "Checkout Limit"
-	sheet.Cell(0, 26).Value = "Use COD"
+	sheet.Cell(0, 4).Value = "Country"
+	sheet.Cell(0, 5).Value = "City"
+	sheet.Cell(0, 6).Value = "Address"
+	sheet.Cell(0, 7).Value = "Apt/House"
+	sheet.Cell(0, 8).Value = "State"
+	sheet.Cell(0, 9).Value = "ZipCode"
+	sheet.Cell(0, 10).Value = "Phone"
+	sheet.Cell(0, 11).Value = "First"
+	sheet.Cell(0, 12).Value = "Last"
+	sheet.Cell(0, 15).Value = "Country"
+	sheet.Cell(0, 16).Value = "City"
+	sheet.Cell(0, 17).Value = "Address"
+	sheet.Cell(0, 18).Value = "Apt / House"
+	sheet.Cell(0, 19).Value = "State"
+	sheet.Cell(0, 20).Value = "ZipCode"
+	sheet.Cell(0, 21).Value = "Phone"
+	sheet.Cell(0, 22).Value = "Profile Name"
+	sheet.Cell(0, 23).Value = "Card Number"
+	sheet.Cell(0, 24).Value = "Month"
+	sheet.Cell(0, 25).Value = "Year"
+	sheet.Cell(0, 26).Value = "CVV"
+	sheet.Cell(0, 27).Value = "Card Name"
+	sheet.Cell(0, 28).Value = "Email"
+	sheet.Cell(0, 32).Value = "Checkout Limit"
+	sheet.Cell(0, 33).Value = "Use COD"
 }
 
 func appendTaskRow(sheet *xlsx.Sheet, items []string, rowNumber int, sectionId string) {
