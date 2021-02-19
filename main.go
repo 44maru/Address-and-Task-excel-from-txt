@@ -153,7 +153,7 @@ func appendAddressRow(sheet *xlsx.Sheet, items []string, rowNumber, needNumOfAdd
 					fmt.Sprintf("カードCVVの数値変換エラー。 テキストファイルセクション%s\n", items[1]),
 					nil)
 			}
-			sheet.Cell(rowNumber, 27).Value = items[17] // CVV
+			sheet.Cell(rowNumber, 26).Value = items[17] // CVV
 			sheet.Cell(rowNumber, 33).Value = "false"
 		} else {
 			// 代金引換
